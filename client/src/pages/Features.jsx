@@ -1,8 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Zap, Users, Globe, TrendingUp, Search } from 'lucide-react';
+import useSEO from '../hooks/useSEO';
 
 const Features = () => {
+  useSEO({
+    title: 'Powerful Workforce Management Features',
+    description: "Explore StaffHub's comprehensive suite of features. From GPS-enabled attendance tracking and role-based access control to automated payroll generation and advanced data analytics.",
+    keywords: 'staffhub features, attendance tracking, payroll management, advanced analytics, role-based access'
+  });
+
   const features = [
     { icon: <Search className="w-8 h-8 text-theme-primary" />, title: 'Smart Search', desc: 'AI-powered matching to find the perfect candidate.' },
     { icon: <Zap className="w-8 h-8 text-theme-secondary" />, title: 'Fast Onboarding', desc: 'Get your new hires up to speed in record time.' },

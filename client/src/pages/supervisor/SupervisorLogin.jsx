@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, Loader2, LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useSEO from '../../hooks/useSEO';
 
 const SupervisorLogin = () => {
+  useSEO({
+    title: 'Supervisor Login',
+    description: 'StaffHub Supervisor Portal Login. Access your dashboard to oversee employee shifts, approve timesheets, manage daily attendance, and track team performance.',
+    keywords: 'supervisor login, staffhub supervisor, team management, track attendance, approve timesheets'
+  });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);

@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, Loader2, LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useSEO from '../../hooks/useSEO';
 
 const EmployeeLogin = () => {
+  useSEO({
+    title: 'Employee Login',
+    description: 'StaffHub Employee Portal Login. Securely log in to view your daily attendance, check your schedule, download payslips, and manage your personal profile.',
+    keywords: 'employee login, staffhub employee, view payslips, check schedule, personal profile'
+  });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);

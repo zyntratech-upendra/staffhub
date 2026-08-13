@@ -1,7 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Building2, Users, Target, Shield, Clock, TrendingUp, CheckCircle2 } from 'lucide-react';
+import useSEO from '../hooks/useSEO';
 
 const About = () => {
+  useSEO({
+    title: 'About Our Enterprise HR Solutions',
+    description: 'Discover the mission and vision behind StaffHub. We are dedicated to simplifying workforce management for modern businesses with secure, scalable, and intuitive HR software solutions.',
+    keywords: 'about staffhub, hr software company, workforce management mission, scalable hr solutions'
+  });
+
   return (
     <div className="min-h-screen pt-32 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

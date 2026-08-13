@@ -1,0 +1,21 @@
+User-agent: *
+# Allow crawling of all public marketing pages
+Allow: /
+Allow: /about
+Allow: /features
+Allow: /contact
+
+# Block crawling of authenticated dashboards and sensitive areas
+Disallow: /admin/dashboard
+Disallow: /admin/profile
+Disallow: /admin/settings
+Disallow: /admin/supervisors
+Disallow: /admin/consultants
+Disallow: /supervisor/dashboard
+Disallow: /supervisor/employees
+Disallow: /consultant/dashboard
+Disallow: /employee/dashboard
+Disallow: /api/
+
+# Specify the location of the Sitemap
+Sitemap: https://staffhub.com/sitemap.xml

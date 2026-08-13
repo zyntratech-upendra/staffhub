@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Mail, Lock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useSEO from '../../hooks/useSEO';
 
 const AdminLogin = () => {
+  useSEO({
+    title: 'Admin Login',
+    description: 'StaffHub Administrator Login. Securely access the main admin portal to manage company accounts, configure global settings, and view platform-wide analytics.',
+    keywords: 'admin login, staffhub admin, platform administration, manage company accounts'
+  });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

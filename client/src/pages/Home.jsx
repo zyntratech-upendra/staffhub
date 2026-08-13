@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import HeroBanner from '../components/HeroBanner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, UserCheck, Users, Briefcase, Clock, DollarSign, FileText, BarChart3, UserPlus, Settings, Activity, TrendingUp, ArrowRight } from 'lucide-react';
+import useSEO from '../hooks/useSEO';
 
 const Home = () => {
+  useSEO({
+    title: 'Smart Staff Management Software',
+    description: 'StaffHub is an enterprise-grade workforce management platform offering smart scheduling, real-time attendance tracking, automated payroll, and actionable analytics. Streamline your HR operations today.',
+    keywords: 'workforce management, hr software, attendance tracking, automated payroll, staff scheduling, staffhub'
+  });
+
   const roles = [
     {
       name: 'Main Admin',

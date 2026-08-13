@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2, MessageSquare } from 'lucide-react';
+import useSEO from '../hooks/useSEO';
 
 const Contact = () => {
+  useSEO({
+    title: 'Contact Our Sales & Support Team',
+    description: 'Contact the StaffHub team for enterprise sales inquiries, technical support, or partnership opportunities. Let us help you transform your workforce management.',
+    keywords: 'contact staffhub, hr software support, enterprise sales, workforce management partnership'
+  });
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  });
+
   return (
     <div className="min-h-screen pt-32 pb-20 bg-white relative overflow-hidden">
       {/* Background elements */}

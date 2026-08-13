@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, Loader2, LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useSEO from '../../hooks/useSEO';
 
 const ConsultantLogin = () => {
+  useSEO({
+    title: 'Consultant Login',
+    description: 'StaffHub Consultant Login. Access the consultant portal to view client engagements, manage project tasks, and securely interact with company data.',
+    keywords: 'consultant login, staffhub consultant, client engagements, project management'
+  });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
