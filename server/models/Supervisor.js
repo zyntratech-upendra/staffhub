@@ -2,8 +2,23 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const adminSchema = new mongoose.Schema({
+const supervisorSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  supervisorId: {
     type: String,
     required: true,
     unique: true,
@@ -14,14 +29,14 @@ const adminSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'Admin',
+    default: 'Supervisor',
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 }, { timestamps: true });
 
 // Hash password before saving
-adminSchema.pre('save', async function () {
+supervisorSchema.pre('save', async function () {
   if (!this.isModified('password')) {
     return;
   }
@@ -30,12 +45,12 @@ adminSchema.pre('save', async function () {
 });
 
 // Match user entered password to hashed password in database
-adminSchema.methods.matchPassword = async function (enteredPassword) {
+supervisorSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Generate and hash password token
-adminSchema.methods.getResetPasswordToken = function () {
+supervisorSchema.methods.getResetPasswordToken = function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString('hex');
 
@@ -51,6 +66,6 @@ adminSchema.methods.getResetPasswordToken = function () {
   return resetToken;
 };
 
-const Admin = mongoose.model('Admin', adminSchema);
+const Supervisor = mongoose.model('Supervisor', supervisorSchema);
 
-module.exports = Admin;
+module.exports = Supervisor;

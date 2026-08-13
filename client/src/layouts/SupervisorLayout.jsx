@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, Bell, Search, LayoutDashboard, Building2, Users, Settings, User, ChevronDown } from 'lucide-react';
+import { Menu, X, LogOut, Bell, Search, LayoutDashboard, User, ChevronDown, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const AdminLayout = () => {
+const SupervisorLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [admin, setAdmin] = useState(null);
+  const [supervisor, setSupervisor] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Supervisor Management', path: '/admin/supervisors', icon: <Users size={20} /> },
-    { name: 'Consultant Management', path: '/admin/consultants', icon: <Users size={20} /> },
-    { name: 'Companies', path: '/admin/companies', icon: <Building2 size={20} /> },
-    { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
+    { name: 'Dashboard', path: '/supervisor/dashboard', icon: <LayoutDashboard size={20} /> },
+    { name: 'Employees', path: '/supervisor/employees', icon: <Users size={20} /> },
   ];
 
   useEffect(() => {
-    const fetchAdminProfile = async () => {
-      const token = localStorage.getItem('adminToken');
+    const fetchSupervisorProfile = async () => {
+      const token = localStorage.getItem('supervisorToken');
       if (!token) {
-        navigate('/admin/login');
+        navigate('/supervisor/login');
         return;
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/me`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/supervisor/me`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -35,30 +31,30 @@ const AdminLayout = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setAdmin(data);
+          setSupervisor(data);
         } else {
-          localStorage.removeItem('adminToken');
-          navigate('/admin/login');
+          localStorage.removeItem('supervisorToken');
+          navigate('/supervisor/login');
         }
       } catch (error) {
-        console.error('Error fetching admin data', error);
+        console.error('Error fetching supervisor data', error);
       }
     };
 
-    fetchAdminProfile();
+    fetchSupervisorProfile();
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    navigate('/admin/login');
+    localStorage.removeItem('supervisorToken');
+    navigate('/supervisor/login');
   };
 
-  if (!admin) {
+  if (!supervisor) {
     return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-500 font-medium">Loading...</div>;
   }
 
   // Generate initials
-  const initials = admin.email ? admin.email.substring(0, 2).toUpperCase() : 'AD';
+  const initials = supervisor.name ? supervisor.name.substring(0, 2).toUpperCase() : 'SU';
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
@@ -82,24 +78,23 @@ const AdminLayout = () => {
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="h-20 flex items-center px-6 border-b border-gray-100">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/logo.png" alt="StaffHub Logo" className="h-10 w-auto" />
-            <span className="text-2xl font-extrabold tracking-wider text-theme-primary hidden">Staff<span className="text-theme-secondary">Hub</span></span>
+        <div className="h-20 flex items-center justify-center border-b border-gray-100 relative">
+          <Link to="/" className="flex items-center justify-center">
+            <img src="/logo.png" alt="StaffHub Logo" className="h-12 w-auto" />
           </Link>
-          <button className="lg:hidden ml-auto text-gray-400 hover:text-gray-800" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden absolute right-4 text-gray-400 hover:text-gray-800" onClick={() => setSidebarOpen(false)}>
             <X size={24} />
           </button>
         </div>
 
         {/* User Profile Block */}
         <div className="p-6 border-b border-gray-100 flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-full bg-theme-primary flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-[#0e3d79] flex items-center justify-center text-white font-bold text-lg shadow-sm">
             {initials}
           </div>
           <div className="overflow-hidden">
-            <h3 className="font-bold text-gray-900 text-sm truncate">{admin.email}</h3>
-            <p className="text-xs text-theme-secondary font-medium">{admin.role}</p>
+            <h3 className="font-bold text-gray-900 text-sm truncate">{supervisor.name}</h3>
+            <p className="text-xs text-teal-600 font-medium">{supervisor.role}</p>
           </div>
         </div>
 
@@ -127,7 +122,7 @@ const AdminLayout = () => {
         </div>
 
         <div className="p-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
-          <span>StaffHub v2.0</span>
+          <span>Supervisor Portal</span>
           <button onClick={handleLogout} className="text-red-500 font-bold hover:text-red-600 transition-colors flex items-center">
             Logout
           </button>
@@ -151,8 +146,8 @@ const AdminLayout = () => {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input 
                 type="text" 
-                placeholder="Search companies, users, or documents..." 
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border-transparent rounded-lg focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all outline-none text-sm font-medium"
+                placeholder="Search..." 
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border-transparent rounded-lg focus:bg-white focus:border-[#0e3d79] focus:ring-2 focus:ring-[#0e3d79]/20 transition-all outline-none text-sm font-medium"
               />
             </div>
           </div>
@@ -166,7 +161,7 @@ const AdminLayout = () => {
             {/* Profile Dropdown */}
             <div className="relative group">
               <div className="flex items-center space-x-2 cursor-pointer bg-gray-50 py-1.5 px-2 rounded-full border border-gray-100 hover:bg-gray-100 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-theme-primary flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-[#0e3d79] flex items-center justify-center text-white font-bold text-xs shadow-sm">
                   {initials}
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -176,17 +171,9 @@ const AdminLayout = () => {
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <div className="py-2">
                   <div className="px-4 py-3 border-b border-gray-50">
-                    <p className="text-sm font-bold text-gray-900 truncate">{admin.email}</p>
-                    <p className="text-xs text-gray-500 font-medium">{admin.role}</p>
+                    <p className="text-sm font-bold text-gray-900 truncate">{supervisor.name}</p>
+                    <p className="text-xs text-gray-500 font-medium">{supervisor.email}</p>
                   </div>
-                  <Link to="/admin/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors">
-                    <User className="w-4 h-4 mr-3 text-gray-400" />
-                    Profile
-                  </Link>
-                  <Link to="/admin/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors">
-                    <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                    Settings
-                  </Link>
                   <button onClick={handleLogout} className="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors border-t border-gray-50 mt-1">
                     <LogOut className="w-4 h-4 mr-3" />
                     Logout
@@ -206,4 +193,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default SupervisorLayout;

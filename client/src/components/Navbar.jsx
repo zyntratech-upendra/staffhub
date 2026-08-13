@@ -76,10 +76,10 @@ const Navbar = () => {
                   <Link to="/login/employee" className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-theme-primary/10 hover:text-theme-primary transition-colors">
                     Employee Login
                   </Link>
-                  <Link to="/login/supervisor" className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-theme-primary/10 hover:text-theme-primary transition-colors">
+                  <Link to="/supervisor/login" className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-theme-primary/10 hover:text-theme-primary transition-colors">
                     Supervisor Login
                   </Link>
-                  <Link to="/login/consultant" className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-theme-primary/10 hover:text-theme-primary transition-colors">
+                  <Link to="/consultant/login" className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-theme-primary/10 hover:text-theme-primary transition-colors">
                     Consultant Login
                   </Link>
                   <Link to="/admin/login" className="block px-4 py-3 text-sm font-bold text-theme-primary bg-theme-primary/5 hover:bg-theme-primary/10 transition-colors border-t border-gray-50 flex items-center justify-between">

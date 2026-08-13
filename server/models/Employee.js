@@ -2,8 +2,23 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const adminSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  employeeId: {
     type: String,
     required: true,
     unique: true,
@@ -14,14 +29,19 @@ const adminSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'Admin',
+    default: 'Employee',
+  },
+  supervisorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Supervisor',
+    required: true,
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 }, { timestamps: true });
 
 // Hash password before saving
-adminSchema.pre('save', async function () {
+employeeSchema.pre('save', async function () {
   if (!this.isModified('password')) {
     return;
   }
@@ -30,27 +50,18 @@ adminSchema.pre('save', async function () {
 });
 
 // Match user entered password to hashed password in database
-adminSchema.methods.matchPassword = async function (enteredPassword) {
+employeeSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Generate and hash password token
-adminSchema.methods.getResetPasswordToken = function () {
-  // Generate token
+employeeSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString('hex');
-
-  // Hash token and set to resetPasswordToken field
-  this.resetPasswordToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
-
-  // Set expire
+  this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
-
   return resetToken;
 };
 
-const Admin = mongoose.model('Admin', adminSchema);
+const Employee = mongoose.model('Employee', employeeSchema);
 
-module.exports = Admin;
+module.exports = Employee;

@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const adminRoutes = require('./routes/adminRoutes');
+const supervisorRoutes = require('./routes/supervisorRoutes');
+const consultantRoutes = require('./routes/consultantRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 // Connect to MongoDB
 connectDB();
@@ -20,6 +23,15 @@ app.get('/api', (req, res) => {
 
 // Admin API Routes
 app.use('/api/admin', adminRoutes);
+
+// Supervisor API Routes
+app.use('/api/supervisor', supervisorRoutes);
+
+// Consultant API Routes
+app.use('/api/consultant', consultantRoutes);
+
+// Employee API Routes
+app.use('/api/employee', employeeRoutes);
 
 const PORT = process.env.PORT || 5000;
 

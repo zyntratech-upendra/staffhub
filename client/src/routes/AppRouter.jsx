@@ -11,11 +11,32 @@ import Dashboard from '../pages/admin/Dashboard';
 import AdminLogin from '../pages/admin/AdminLogin';
 import Profile from '../pages/admin/Profile';
 import Settings from '../pages/admin/Settings';
+import SupervisorManagement from '../pages/admin/SupervisorManagement';
+import ConsultantManagement from '../pages/admin/ConsultantManagement';
+import EmployeeManagement from '../pages/supervisor/EmployeeManagement';
 
+// Supervisor Routes
+import SupervisorLayout from '../layouts/SupervisorLayout';
+import SupervisorLogin from '../pages/supervisor/SupervisorLogin';
+import SupervisorDashboard from '../pages/supervisor/SupervisorDashboard';
+
+// Consultant Routes
+import ConsultantLayout from '../layouts/ConsultantLayout';
+import ConsultantLogin from '../pages/consultant/ConsultantLogin';
+import ConsultantDashboard from '../pages/consultant/ConsultantDashboard';
+
+// Employee Routes
+import EmployeeLayout from '../layouts/EmployeeLayout';
+import EmployeeLogin from '../pages/employee/EmployeeLogin';
+import EmployeeDashboard from '../pages/employee/EmployeeDashboard';
+
+// Auth Routes (Generic)
+import ForgotPassword from '../pages/auth/ForgotPassword';
+import ResetPassword from '../pages/auth/ResetPassword';
 const MainLayout = () => (
   <div className="flex flex-col min-h-screen">
     <Navbar />
-    <main className="flex-grow">
+    <main className="flex-grow flex flex-col">
       <Outlet />
     </main>
     <Footer />
@@ -31,16 +52,49 @@ const AppRouter = () => {
           <Route path="/about" element={<About />} />
           <Route path="/features" element={<Features />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Supervisor Login & Recovery */}
+          <Route path="/supervisor/login" element={<SupervisorLogin />} />
+          <Route path="/supervisor/forgot-password" element={<ForgotPassword role="supervisor" />} />
+          <Route path="/supervisor/reset-password/:token" element={<ResetPassword role="supervisor" />} />
         </Route>
         
         {/* Admin Login - Standalone */}
         <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* Consultant Login & Recovery */}
+        <Route path="/consultant/login" element={<ConsultantLogin />} />
+        <Route path="/consultant/forgot-password" element={<ForgotPassword role="consultant" />} />
+        <Route path="/consultant/reset-password/:token" element={<ResetPassword role="consultant" />} />
+
+        {/* Employee Login & Recovery */}
+        <Route path="/employee/login" element={<EmployeeLogin />} />
+        <Route path="/employee/forgot-password" element={<ForgotPassword role="employee" />} />
+        <Route path="/employee/reset-password/:token" element={<ResetPassword role="employee" />} />
         
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="supervisors" element={<SupervisorManagement />} />
+          <Route path="consultants" element={<ConsultantManagement />} />
+        </Route>
+
+        {/* Supervisor Routes */}
+        <Route path="/supervisor" element={<SupervisorLayout />}>
+          <Route path="dashboard" element={<SupervisorDashboard />} />
+          <Route path="employees" element={<EmployeeManagement />} />
+        </Route>
+
+        {/* Consultant Routes */}
+        <Route path="/consultant" element={<ConsultantLayout />}>
+          <Route path="dashboard" element={<ConsultantDashboard />} />
+        </Route>
+
+        {/* Employee Routes */}
+        <Route path="/employee" element={<EmployeeLayout />}>
+          <Route path="dashboard" element={<EmployeeDashboard />} />
         </Route>
       </Routes>
     </Router>
