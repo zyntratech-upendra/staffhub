@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit2, Trash2, X, Loader2, Briefcase, Mail, Phone, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const EmployeeManagement = () => {
@@ -11,6 +12,7 @@ const EmployeeManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -153,7 +155,7 @@ const EmployeeManagement = () => {
           <p className="text-gray-500 mt-1 font-medium text-sm">Manage your team members and access credentials.</p>
         </div>
         <button 
-          onClick={() => openModal()}
+          onClick={() => navigate('/supervisor/employees/add')}
           className="flex items-center space-x-2 bg-gradient-to-r from-[#0e3d79] to-[#1553a1] hover:from-[#1553a1] hover:to-[#0e3d79] text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-[#0e3d79]/30 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
         >
           <Plus size={18} />

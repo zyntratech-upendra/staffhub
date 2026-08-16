@@ -173,11 +173,11 @@ const AdminLayout = () => {
               </div>
 
               {/* Dropdown Menu */}
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <div className="py-2">
                   <div className="px-4 py-3 border-b border-gray-50">
                     <p className="text-sm font-bold text-gray-900 truncate">{admin.email}</p>
-                    <p className="text-xs text-gray-500 font-medium">{admin.role}</p>
+                    <p className="text-xs text-gray-500 font-medium truncate">{admin.role}</p>
                   </div>
                   <Link to="/admin/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors">
                     <User className="w-4 h-4 mr-3 text-gray-400" />

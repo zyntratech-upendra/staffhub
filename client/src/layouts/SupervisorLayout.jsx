@@ -168,11 +168,11 @@ const SupervisorLayout = () => {
               </div>
 
               {/* Dropdown Menu */}
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <div className="py-2">
                   <div className="px-4 py-3 border-b border-gray-50">
                     <p className="text-sm font-bold text-gray-900 truncate">{supervisor.name}</p>
-                    <p className="text-xs text-gray-500 font-medium">{supervisor.email}</p>
+                    <p className="text-xs text-gray-500 font-medium truncate">{supervisor.email}</p>
                   </div>
                   <button onClick={handleLogout} className="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors border-t border-gray-50 mt-1">
                     <LogOut className="w-4 h-4 mr-3" />

@@ -6,6 +6,8 @@ const generateToken = require('../utils/generateToken');
 const { protectSupervisor } = require('../middleware/authMiddleware');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
+const upload = require('../middleware/upload');
+const { generateJoiningLetter } = require('../utils/pdfGenerator');
 
 // @route   POST /api/supervisor/login
 // @desc    Auth supervisor & get token
@@ -149,9 +151,13 @@ router.put('/resetpassword/:resettoken', async (req, res) => {
 // @route   POST /api/supervisor/employees
 // @desc    Create new employee
 // @access  Private (Supervisor)
-router.post('/employees', protectSupervisor, async (req, res) => {
+router.post('/employees', protectSupervisor, upload.fields([{ name: 'aadhaar', maxCount: 1 }, { name: 'pan', maxCount: 1 }, { name: 'profilePhoto', maxCount: 1 }]), async (req, res) => {
   try {
-    const { name, email, employeeId, phoneNumber, address } = req.body;
+    const { 
+      name, email, employeeId, phoneNumber, address,
+      dob, gender, qualifications, institutions, passingYear,
+      skillType, skills, experienceYears, previousRoles, previousSalary
+    } = req.body;
 
     const employeeExists = await Employee.findOne({ $or: [{ email }, { employeeId }] });
     if (employeeExists) {
@@ -169,13 +175,32 @@ router.post('/employees', protectSupervisor, async (req, res) => {
     
     const plainPassword = generateRandomPassword();
 
+    let aadhaarUrl = '';
+    let panUrl = '';
+    let profilePhotoUrl = '';
+
+    if (req.files) {
+      if (req.files.aadhaar) aadhaarUrl = req.files.aadhaar[0].path;
+      if (req.files.pan) panUrl = req.files.pan[0].path;
+      if (req.files.profilePhoto) profilePhotoUrl = req.files.profilePhoto[0].path;
+    }
+
+    // Parse skills array if it comes as a string (FormData limitation)
+    let parsedSkills = [];
+    if (skills) {
+      try {
+        parsedSkills = typeof skills === 'string' ? JSON.parse(skills) : skills;
+      } catch (e) {
+        parsedSkills = skills.split(',').map(s => s.trim());
+      }
+    }
+
     const employee = await Employee.create({
-      name,
-      email,
-      employeeId,
-      phoneNumber,
-      address,
+      name, email, employeeId, phoneNumber, address,
+      dob, gender, qualifications, institutions, passingYear,
+      skillType, skills: parsedSkills, experienceYears, previousRoles, previousSalary,
       password: plainPassword,
+      aadhaarUrl, panUrl, profilePhotoUrl,
       supervisorId: req.supervisor._id
     });
 
@@ -188,7 +213,7 @@ router.post('/employees', protectSupervisor, async (req, res) => {
         <div style="background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6;">
           <h2 style="color: #1f2937; margin-top: 0; text-align: center;">Welcome to StaffHub!</h2>
           <p style="color: #4b5563; line-height: 1.6;">Hello <strong>${name}</strong>,</p>
-          <p style="color: #4b5563; line-height: 1.6;">Your Employee account has been successfully created by your Supervisor.</p>
+          <p style="color: #4b5563; line-height: 1.6;">Your Employee account has been successfully created by your Supervisor. Please find your official Joining Letter attached to this email.</p>
           <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0e3d79;">
             <p style="margin: 0 0 10px 0; color: #374151;"><strong>Login Details:</strong></p>
             <p style="margin: 0; color: #4b5563;">Email: <strong>${email}</strong></p>
@@ -203,11 +228,20 @@ router.post('/employees', protectSupervisor, async (req, res) => {
     `;
 
     try {
+      const pdfBuffer = await generateJoiningLetter({ name, employeeId, email });
+      
       await sendEmail({
         email: employee.email,
-        subject: 'Welcome to StaffHub - Account Created',
-        message: 'Your account has been created.',
+        subject: 'Welcome to StaffHub - Account Created & Joining Letter',
+        message: 'Your account has been created. Please find your joining letter attached.',
         html: htmlTemplate,
+        attachments: [
+          {
+            filename: 'Joining_Letter.pdf',
+            content: pdfBuffer,
+            contentType: 'application/pdf'
+          }
+        ]
       });
     } catch (err) {
       console.error('Email failed to send for employee creation:', err);

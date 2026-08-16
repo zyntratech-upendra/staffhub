@@ -19,6 +19,7 @@ import EmployeeManagement from '../pages/supervisor/EmployeeManagement';
 import SupervisorLayout from '../layouts/SupervisorLayout';
 import SupervisorLogin from '../pages/supervisor/SupervisorLogin';
 import SupervisorDashboard from '../pages/supervisor/SupervisorDashboard';
+import AddEmployee from '../pages/supervisor/AddEmployee';
 
 // Consultant Routes
 import ConsultantLayout from '../layouts/ConsultantLayout';
@@ -57,8 +58,12 @@ const AppRouter = () => {
           <Route path="/supervisor/login" element={<SupervisorLogin />} />
           <Route path="/supervisor/forgot-password" element={<ForgotPassword role="supervisor" />} />
           <Route path="/supervisor/reset-password/:token" element={<ResetPassword role="supervisor" />} />
-        </Route>
-        
+          
+          {/* Employee Login & Recovery */}
+          <Route path="/employee/login" element={<EmployeeLogin />} />
+          <Route path="/employee/forgot-password" element={<ForgotPassword role="employee" />} />
+          <Route path="/employee/reset-password/:token" element={<ResetPassword role="employee" />} />
+        </Route>        
         {/* Admin Login - Standalone */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
@@ -67,10 +72,6 @@ const AppRouter = () => {
         <Route path="/consultant/forgot-password" element={<ForgotPassword role="consultant" />} />
         <Route path="/consultant/reset-password/:token" element={<ResetPassword role="consultant" />} />
 
-        {/* Employee Login & Recovery */}
-        <Route path="/employee/login" element={<EmployeeLogin />} />
-        <Route path="/employee/forgot-password" element={<ForgotPassword role="employee" />} />
-        <Route path="/employee/reset-password/:token" element={<ResetPassword role="employee" />} />
         
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -85,6 +86,7 @@ const AppRouter = () => {
         <Route path="/supervisor" element={<SupervisorLayout />}>
           <Route path="dashboard" element={<SupervisorDashboard />} />
           <Route path="employees" element={<EmployeeManagement />} />
+          <Route path="employees/add" element={<AddEmployee />} />
         </Route>
 
         {/* Consultant Routes */}
